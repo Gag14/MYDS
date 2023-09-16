@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "/home/gag/AlgorithmsAndDS/DS/Trees/BinaryTree/BInaryTreeInterface.h"
+#include "/home/gag/MYDS/AlgorithmsandDS/DS/Trees/BinaryTree/BInaryTreeInterface.h"
 
 namespace MYDS
 {

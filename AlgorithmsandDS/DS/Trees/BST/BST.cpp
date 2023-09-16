@@ -206,12 +206,10 @@ typename MYDS::BST<X>::TreeNode *MYDS::BST<X>::removeValue(TreeNode *root, const
     else
     {
         // Value found
-        std::cout << "Value is found in remove" << std::endl;
         success = true;
 
         if (root->isLeaf())
         {
-            std::cout << "leaf" << std::endl;
             // Case 1: Node is a leaf
             delete root;
             root = nullptr; // Set the pointer to null
@@ -241,7 +239,6 @@ typename MYDS::BST<X>::TreeNode *MYDS::BST<X>::removeValue(TreeNode *root, const
             }
             if (minValueNode)
             {
-                std::cout << minValueNode->data << "Min Val node Data" << std::endl;
                 root->data = minValueNode->data;
             }
             else
