@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <algorithm>
+#include <queue>
 
 #include "/home/gag/MYDS/AlgorithmsandDS/DS/Trees/BinaryTree/BInaryTreeInterface.h"
 
@@ -91,7 +92,10 @@ namespace MYDS
         void printInorder() {}
         // Level Order Traversal
 
-        virtual void levelOrderTraversal(void visit(X &)) {}
+        virtual void levelOrderTraversal(void visit(X &))
+        {
+            levelOrder(visit, m_root);
+        }
         // Operator Overloadings
         AVL &operator=(const AVL &other)
         {
@@ -101,6 +105,14 @@ namespace MYDS
             }
             m_root = copyTree(other.m_root);
             return *this;
+        }
+        void LevelOrderPrint()
+        {
+            std::vector<std::vector<X>> levels = levelOrderBottom(m_root);
+            for (auto &level : levels)
+            {
+                printvector(level);
+            }
         }
 
     protected:
@@ -150,31 +162,35 @@ namespace MYDS
             {
                 destroyTree(root->left);
                 destroyTree(root->right);
+
+                // std::cout << root->data << " \n";
                 delete root;
-                root = nullptr; // Set the pointer to null to avoid any dangling references
-            };
+                root = nullptr; // Set the pointer to null after deleting the node
+            }
         }
+
         TreeNode *balancedAdd(TreeNode *root, TreeNode *newNode)
         {
             if (!root)
             {
-                root = newNode;
+                return newNode; // Create a new node if the tree is empty
             }
-            if (!newNode)
-            {
-                return root;
-            }
-            if (newNode->data > root->data)
-            {
-                root->right = balancedAdd(root->right, newNode);
-            }
+
             if (newNode->data < root->data)
             {
                 root->left = balancedAdd(root->left, newNode);
             }
+            else if (newNode->data > root->data)
+            {
+                root->right = balancedAdd(root->right, newNode);
+            }
+
+            // Update the height of the current node
             root = balanceTree(root, newNode->data);
+
             return root;
         }
+
         TreeNode *removeValue(TreeNode *root, const X val, bool &success)
         {
             if (!root)
@@ -310,6 +326,39 @@ namespace MYDS
                 inorder(visit, root->right);
             }
         }
+        void levelOrder(void visit(X &), TreeNode *root)
+        {
+            if (!root)
+            {
+                std::cout << "Empty Tree" << std::endl;
+                return;
+            }
+
+            std::queue<TreeNode *> level;
+            level.push(root);
+
+            while (!level.empty())
+            {
+                TreeNode *current = level.front();
+                level.pop();
+
+                if (current)
+                {
+                    visit(current->data);
+
+                    if (current->left)
+                    {
+                        level.push(current->left);
+                    }
+
+                    if (current->right)
+                    {
+                        level.push(current->right);
+                    }
+                }
+            }
+        }
+
         int getBF(TreeNode *node)
         {
             int bf = 0;
@@ -361,6 +410,51 @@ namespace MYDS
                 return leftRotate(root);
             }
             return root;
+        }
+        std::vector<std::vector<int>> levelOrderBottom(TreeNode *root)
+        {
+            std::vector<std::vector<int>> res;
+            if (!root)
+            {
+                return res;
+            }
+            std::queue<TreeNode *> qu;
+            qu.push(root);
+            while (!qu.empty())
+            {
+                int size = qu.size();
+                std::vector<int> level;
+                for (int i = 0; i < size; ++i)
+                {
+                    TreeNode *tmp = qu.front();
+                    qu.pop();
+
+                    if (!tmp)
+                    {
+                        continue;
+                    }
+                    level.push_back(tmp->data);
+                    if (tmp->left)
+                    {
+                        qu.push(tmp->left);
+                    }
+                    if (tmp->right)
+                    {
+                        qu.push(tmp->right);
+                    }
+                }
+                res.push_back(level);
+            }
+            // std::reverse(res.begin(), res.end());
+            return res;
+        }
+        void printvector(const std::vector<X> vec)
+        {
+            for (auto &i : vec)
+            {
+                std::cout << i << " ";
+            }
+            std::cout << std::endl;
         }
 
     private:

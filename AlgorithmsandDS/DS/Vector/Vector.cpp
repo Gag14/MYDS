@@ -57,7 +57,7 @@ MYDS::Vector<X> &MYDS::Vector<X>::operator=(const Vector<X> &rhs)
 template <typename X>
 X &MYDS::Vector<X>::operator[](size_t position)
 {
-    if (position > m_size)
+    if (position >= m_size)
     {
         throw std::out_of_range("Index out of Range");
     }
@@ -126,6 +126,7 @@ void MYDS::Vector<X>::pop_back()
     delete[] m_elements;
     m_elements = tmp;
     tmp = nullptr;
+    --m_size;
 }
 
 template <typename X>
@@ -171,7 +172,7 @@ template <typename X>
 bool MYDS::Vector<X>::insert(size_t position, const X &element)
 {
     bool success = 0;
-    if (position > size)
+    if (position > m_size)
     {
         throw std::out_of_range("Index out of Range");
     }
@@ -215,7 +216,7 @@ size_t MYDS::Vector<X>::find(const X &element)
     }
     return m_size;
 }
-
+/*
 int main()
 {
     MYDS::Vector<int> vec = {1, 2, 4, 5};
@@ -240,7 +241,7 @@ int main()
     vec2 = vec + vec2;
     std::cout << vec2.size() << std::endl;
 }
-
+*/
 // Sorting Methods
 /*
 template <typename X>

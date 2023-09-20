@@ -21,6 +21,8 @@ int main() {
     avlTree.add(12);
     avlTree.add(20);
 
+    std::cout << "Below is the Tree in Level Order" << std::endl;
+    avlTree.LevelOrderPrint();
     // Test contains()
     if (avlTree.contains(12)) {
         std::cout << "AVL tree contains 12.\n";

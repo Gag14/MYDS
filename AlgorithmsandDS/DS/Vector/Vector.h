@@ -84,5 +84,5 @@ namespace MYDS
         X *m_elements;
     };
 }
-
+#include "Vector.cpp"
 #endif // End of Vector.h
